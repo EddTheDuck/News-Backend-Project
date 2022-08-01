@@ -27,9 +27,13 @@
     "pg-format": "^1.0.4"
   },
   "dependencies": {
+ 03-GET-/api/topics
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "nodemon": "^2.0.19",
+
+    "dotenv": "^16.0.0",
+main
     "pg": "^8.7.3",
     "supertest": "^6.2.4"
   },
