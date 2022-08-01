@@ -1,6 +1,6 @@
 # Northcoders News API
 
-## Greetings weary travellers, welcome to my BE prokect for Northcoders!
+## Greetings weary travellers, welcome to my BE project for Northcoders!
 
 ######
 
