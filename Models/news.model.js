@@ -16,3 +16,5 @@ exports.fetchArticles = (id) => {
       return rows[0];
     });
 };
+
+exports.changeVotes = () => {};

@@ -65,3 +65,5 @@ describe("GET /api/articles/:article_id", () => {
       });
   });
 });
+
+describe("PATCH /api/articles/:article_id", () => {});

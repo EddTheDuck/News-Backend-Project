@@ -1,4 +1,8 @@
-const { fetchTopics, fetchArticles } = require("../Models/news.model");
+const {
+  fetchTopics,
+  fetchArticles,
+  changeVotes,
+} = require("../Models/news.model");
 
 exports.getTopics = (req, res, next) => {
   fetchTopics()
@@ -18,4 +22,8 @@ exports.getArticles = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
+
+exports.patchVotes = (req, res, next) => {
+  changeVotes();
 };
