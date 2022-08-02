@@ -48,12 +48,12 @@ describe("GET /api/articles/:article_id", () => {
         expect(article).toHaveProperty("votes");
       });
   });
-  test("returns a 404 when invalid request", () => {
+  test("returns a 404 when Request not found", () => {
     return request(app)
       .get("/api/articles/69")
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Bad Request!");
+        expect(body.msg).toBe("Request not found!");
       });
   });
   test("returns a 400 when invalid request", () => {
