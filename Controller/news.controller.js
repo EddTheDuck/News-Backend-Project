@@ -25,5 +25,13 @@ exports.getArticles = (req, res, next) => {
 };
 
 exports.patchVotes = (req, res, next) => {
-  changeVotes();
+  const articles_id = req.params.article_id;
+  const votes = req.body.votes;
+  changeVotes(votes, articles_id)
+    .then((article) => {
+      res.send({ article });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
