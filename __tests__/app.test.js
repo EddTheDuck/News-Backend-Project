@@ -3,6 +3,7 @@ const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
 const db = require("../db/connection");
+const users = require("../db/data/test-data/users");
 
 beforeEach(() => {
   return seed(testData);
@@ -119,6 +120,27 @@ describe("PATCH /api/articles/:article_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Bad Request!");
+      });
+  });
+});
+
+describe("GET /api/users", () => {
+  test("Respond with status 200: and an array of objects", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        const { users } = body;
+        expect(users).toBeInstanceOf(Array);
+        users.forEach((user) => {
+          expect(user).toEqual(
+            expect.objectContaining({
+              username: expect.any(String),
+              name: expect.any(String),
+              avatar_url: expect.any(String),
+            })
+          );
+        });
       });
   });
 });
