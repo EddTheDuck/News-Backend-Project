@@ -27,7 +27,6 @@ exports.getArticles = (req, res, next) => {
 exports.patchVotes = (req, res, next) => {
   const articles_id = req.params.article_id;
   const votes = req.body.votes;
-  console.log(votes);
   changeVotes(votes, articles_id)
     .then((article) => {
       res.send({ article });

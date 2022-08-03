@@ -18,7 +18,6 @@ exports.fetchArticles = (id) => {
 };
 
 exports.changeVotes = (votes, id) => {
-  console.log(votes);
   if (votes == undefined) {
     return Promise.reject({ status: 400, msg: "Bad Request!" });
   } else {
