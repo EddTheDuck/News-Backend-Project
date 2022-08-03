@@ -2,6 +2,7 @@ const {
   fetchTopics,
   fetchArticles,
   changeVotes,
+  fetchUsers,
 } = require("../Models/news.model");
 
 exports.getTopics = (req, res, next) => {
@@ -30,6 +31,16 @@ exports.patchVotes = (req, res, next) => {
   changeVotes(votes, articles_id)
     .then((article) => {
       res.send({ article });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getUsers = (req, res, next) => {
+  fetchUsers()
+    .then((users) => {
+      res.send({ users });
     })
     .catch((err) => {
       next(err);
