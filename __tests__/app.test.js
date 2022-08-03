@@ -65,3 +65,60 @@ describe("GET /api/articles/:article_id", () => {
       });
   });
 });
+
+describe("PATCH /api/articles/:article_id", () => {
+  test("update votes of a selected article", () => {
+    const incVotes = {
+      votes: 2,
+    };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(incVotes)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.article.votes).toEqual(102);
+      });
+  });
+  test("returns a 404 when Request not found", () => {
+    const incVotes = {
+      votes: 2,
+    };
+    return request(app)
+      .patch("/api/articles/69")
+      .send(incVotes)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Request not found!");
+      });
+  });
+  test("returns a 400 when invalid request", () => {
+    return request(app)
+      .get("/api/articles/rhubarb")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+  test("returns 400 when sent an incorrect data type that still has the correct key", () => {
+    const incVotes = {
+      votes: "fish",
+    };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(incVotes)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+  test("returns 400 when sent an incorrect data type", () => {
+    const incVotes = "fish";
+    return request(app)
+      .patch("/api/articles/1")
+      .send(incVotes)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+});
