@@ -1,8 +1,9 @@
 const {
   fetchTopics,
-  fetchArticles,
+  fetchArticlesById,
   changeVotes,
   fetchUsers,
+  fetchArticles,
 } = require("../Models/news.model");
 
 exports.getTopics = (req, res, next) => {
@@ -15,8 +16,8 @@ exports.getTopics = (req, res, next) => {
     });
 };
 
-exports.getArticles = (req, res, next) => {
-  fetchArticles(req.params.article_id)
+exports.getArticlesById = (req, res, next) => {
+  fetchArticlesById(req.params.article_id)
     .then((article) => {
       res.send({ article });
     })
@@ -45,4 +46,10 @@ exports.getUsers = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
+
+exports.getArticles = (req, res, next) => {
+  fetchArticles().then((articles) => {
+    res.send({ articles });
+  });
 };
