@@ -5,7 +5,6 @@ exports.fetchTopics = () => {
     return rows;
   });
 };
-// WHERE article_id =$1
 exports.fetchArticles = (id) => {
   return db
     .query(
@@ -16,7 +15,6 @@ exports.fetchArticles = (id) => {
       if (rows.length === 0) {
         return Promise.reject({ status: 404, msg: "Request not found!" });
       }
-      console.log(rows);
       return rows[0];
     });
 };
