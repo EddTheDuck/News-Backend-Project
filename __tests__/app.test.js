@@ -33,7 +33,7 @@ describe("GET /api/topics", () => {
   });
 });
 
-describe.only("GET /api/articles/:article_id", () => {
+describe("GET /api/articles/:article_id", () => {
   test("respond with a status 200: and an article object", () => {
     return request(app)
       .get("/api/articles/1")
