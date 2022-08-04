@@ -153,12 +153,68 @@ describe("GET /api/users", () => {
   });
 });
 
-// FEATURE REQUEST
-// An article response object should also now include:
-
-// -comment_count which is the total count of all the comments with this article_id - you should make use of queries to the database in order to achieve this.
-
-//needs a new column called comment_count - in the comment.js file it needs to count the number of comments that are for a particular article_id
-
-// SELECT animals.*, COUNT(northcoder_id)
-// FROM animals
+describe("GET /api/articles", () => {
+  test("Respond with status 200: and an array of articles", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeInstanceOf(Array);
+        articles.forEach((article) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              author: expect.any(String),
+              title: expect.any(String),
+              article_id: expect.any(Number),
+              topic: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+              comment_count: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+  test("Check that they are ordered in descending order by created_at", () => {
+    const objectOne = {
+      article_id: 3,
+      title: "Eight pug gifs that remind me of mitch",
+      topic: "mitch",
+      author: "icellusedkars",
+      body: "some gifs",
+      created_at: "2020-11-03T09:12:00.000Z",
+      votes: 0,
+      comment_count: 2,
+    };
+    const objectTwo = {
+      article_id: 6,
+      title: "A",
+      topic: "mitch",
+      author: "icellusedkars",
+      body: "Delicious tin of cat food",
+      created_at: "2020-10-18T01:00:00.000Z",
+      votes: 0,
+      comment_count: 1,
+    };
+    const objectLast = {
+      article_id: 7,
+      title: "Z",
+      topic: "mitch",
+      author: "icellusedkars",
+      body: "I was hungry.",
+      created_at: "2020-01-07T14:08:00.000Z",
+      votes: 0,
+      comment_count: 0,
+    };
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles[0]).toEqual(objectOne);
+        expect(articles[1]).toEqual(objectTwo);
+        expect(articles[articles.length - 1]).toEqual(objectLast);
+      });
+  });
+});
