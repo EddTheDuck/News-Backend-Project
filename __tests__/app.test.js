@@ -33,7 +33,7 @@ describe("GET /api/topics", () => {
   });
 });
 
-describe("GET /api/articles/:article_id", () => {
+describe.only("GET /api/articles/:article_id", () => {
   test("respond with a status 200: and an article object", () => {
     return request(app)
       .get("/api/articles/1")
@@ -63,6 +63,14 @@ describe("GET /api/articles/:article_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Bad Request!");
+      });
+  });
+  test("returns a 200 and comment_count", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.article.comment_count).toEqual(11);
       });
   });
 });
@@ -144,3 +152,13 @@ describe("GET /api/users", () => {
       });
   });
 });
+
+// FEATURE REQUEST
+// An article response object should also now include:
+
+// -comment_count which is the total count of all the comments with this article_id - you should make use of queries to the database in order to achieve this.
+
+//needs a new column called comment_count - in the comment.js file it needs to count the number of comments that are for a particular article_id
+
+// SELECT animals.*, COUNT(northcoder_id)
+// FROM animals
