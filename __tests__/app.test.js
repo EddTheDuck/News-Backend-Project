@@ -222,7 +222,7 @@ describe("GET /api/articles", () => {
 describe("GET article comments", () => {
   test("returns status 400 when given invalid id ", () => {
     return request(app)
-      .get("/api/articles/test/comments")
+      .get("/api/articles/burger/comments")
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Bad Request!");
@@ -255,7 +255,7 @@ describe("GET article comments", () => {
   });
   test("responds with 404: valid ID but doesn't exist", () => {
     return request(app)
-      .get("/api/articles/2828")
+      .get("/api/articles/2828/comments")
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Request not found!");

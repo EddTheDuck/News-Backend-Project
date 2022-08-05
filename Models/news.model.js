@@ -54,10 +54,18 @@ exports.fetchArticles = () => {
     });
 };
 
-exports.fetchArticleComments = (article_id) => {
+exports.fetchArticleComments = (id) => {
   return db
-    .query(`SELECT * FROM comments WHERE article_id = $1;`, [article_id])
-    .then(({ rows: comments }) => {
-      return comments;
+    .query(`SELECT * FROM articles WHERE article_id =$1`, [id])
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({ status: 404, msg: "Request not found!" });
+      } else {
+        return db
+          .query(`SELECT * FROM comments WHERE article_id =$1`, [id])
+          .then(({ rows }) => {
+            return rows;
+          });
+      }
     });
 };
