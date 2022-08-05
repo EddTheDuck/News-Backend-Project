@@ -218,3 +218,40 @@ describe("GET /api/articles", () => {
       });
   });
 });
+
+describe("GET article comments", () => {
+  test("returns status 400 when given invalid id ", () => {
+    return request(app)
+      .get("/api/articles/test/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+
+  test("returns status 200 and an empty array when an article has no comments ", () => {
+    return request(app)
+      .get("/api/articles/4/comments")
+      .expect(200)
+      .then(({ body: { comments } }) => {
+        expect(comments).toEqual([]);
+      });
+  });
+  test("returns the desired status code and array object properties ", () => {
+    return request(app)
+      .get("/api/articles/3/comments")
+      .expect(200)
+      .then(({ body: { comments } }) => {
+        expect(comments).toBeInstanceOf(Array);
+        expect(comments.length).toBe(2);
+        comments.forEach((comment) => {
+          expect(comment).toBeInstanceOf(Object);
+          expect(typeof comment.comment_id).toBe("number");
+          expect(typeof comment.votes).toBe("number");
+          expect(typeof comment.created_at).toBe("string");
+          expect(typeof comment.author).toBe("string");
+          expect(typeof comment.body).toBe("string");
+        });
+      });
+  });
+});

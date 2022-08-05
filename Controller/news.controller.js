@@ -4,6 +4,7 @@ const {
   changeVotes,
   fetchUsers,
   fetchArticles,
+  fetchArticleComments,
 } = require("../Models/news.model");
 
 exports.getTopics = (req, res, next) => {
@@ -52,4 +53,14 @@ exports.getArticles = (req, res, next) => {
   fetchArticles().then((articles) => {
     res.send({ articles });
   });
+};
+
+exports.getArticleComments = (req, res, next) => {
+  fetchArticleComments(req.params.article_id)
+    .then((comments) => {
+      res.send({ comments: comments });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
