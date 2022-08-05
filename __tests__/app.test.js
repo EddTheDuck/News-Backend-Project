@@ -3,7 +3,6 @@ const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
 const db = require("../db/connection");
-const users = require("../db/data/test-data/users");
 
 beforeEach(() => {
   return seed(testData);
@@ -259,6 +258,69 @@ describe("GET article comments", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Request not found!");
+      });
+  });
+});
+
+describe("POST article comments", () => {
+  test("returns status 400 when given invalid id ", () => {
+    return request(app)
+      .post("/api/articles/test/comments")
+      .send({
+        username: "butter_bridge",
+        body: "Super Duper!",
+      })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+  test("returns status 404 when the given id is not found ", () => {
+    return request(app)
+      .post("/api/articles/2020/comments")
+      .send({
+        username: "butter_bridge",
+        body: "Super Duper!",
+      })
+      .expect(404);
+  });
+  test("returns status 404 when the given username is not found ", () => {
+    return request(app)
+      .post("/api/articles/2020/comments")
+      .send({ username: "Garbage Pod", body: "Super Duper!" })
+      .expect(404);
+  });
+  test("returns 400 for post body not containing a comment key/value", () => {
+    return request(app)
+      .post("/api/articles/3/comments")
+      .send({ username: "Garbage Pod" })
+      .expect(400);
+  });
+  test("returns 400 for post body not containing a username key/value", () => {
+    return request(app)
+      .post("/api/articles/3/comments")
+      .send({ body: "Super Duper" })
+      .expect(400);
+  });
+  test("returns the desired status code and array object properties ", () => {
+    return request(app)
+      .post("/api/articles/3/comments")
+      .send({
+        username: "butter_bridge",
+        body: "Super Duper",
+      })
+      .expect(201)
+      .then(({ body: { comment } }) => {
+        expect(comment).toBeInstanceOf(Array);
+        expect(comment.length).toBe(1);
+        comment.forEach((comment) => {
+          expect(comment).toBeInstanceOf(Object);
+          expect(typeof comment.comment_id).toBe("number");
+          expect(typeof comment.votes).toBe("number");
+          expect(typeof comment.created_at).toBe("string");
+          expect(typeof comment.author).toBe("string");
+          expect(typeof comment.body).toBe("string");
+        });
       });
   });
 });

@@ -69,3 +69,17 @@ exports.fetchArticleComments = (id) => {
       }
     });
 };
+
+exports.postArticleComment = (article_id, comment) => {
+  if (comment.body === undefined || comment.username === undefined) {
+    return Promise.reject({ status: 400 });
+  }
+  return db
+    .query(
+      `INSERT INTO comments (article_id, author, body) VALUES ($1, $2, $3) returning *;`,
+      [article_id, comment.username, comment.body]
+    )
+    .then(({ rows: comment }) => {
+      return comment;
+    });
+};
