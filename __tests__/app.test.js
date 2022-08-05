@@ -228,7 +228,6 @@ describe("GET article comments", () => {
         expect(body.msg).toBe("Bad Request!");
       });
   });
-
   test("returns status 200 and an empty array when an article has no comments ", () => {
     return request(app)
       .get("/api/articles/4/comments")
@@ -252,6 +251,14 @@ describe("GET article comments", () => {
           expect(typeof comment.author).toBe("string");
           expect(typeof comment.body).toBe("string");
         });
+      });
+  });
+  test("responds with 404: valid ID but doesn't exist", () => {
+    return request(app)
+      .get("/api/articles/2828")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Request not found!");
       });
   });
 });
