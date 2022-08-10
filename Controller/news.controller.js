@@ -51,7 +51,10 @@ exports.getUsers = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  fetchArticles().then((articles) => {
+  const { sortby, orderby, topic } = req.query;
+
+  console.log(req.query);
+  fetchArticles(sortby, orderby, topic).then((articles) => {
     res.send({ articles });
   });
 };

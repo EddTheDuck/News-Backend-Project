@@ -44,14 +44,22 @@ exports.fetchUsers = () => {
   });
 };
 
-exports.fetchArticles = () => {
-  return db
-    .query(
-      `SELECT articles.*, COUNT(comments.article_id)::INT AS comment_count FROM articles LEFT JOIN comments ON comments.article_id = articles.article_id GROUP BY articles.article_id ORDER BY created_at DESC;`
-    )
-    .then(({ rows }) => {
-      return rows;
-    });
+exports.fetchArticles = (
+  sortby = "created_at",
+  orderby = "DESC",
+  topic = "all"
+) => {
+  let baseSql = `SELECT articles.*, COUNT(comments.article_id)::INT AS comment_count FROM articles LEFT JOIN comments ON comments.article_id = articles.article_id`;
+  const queryValues = [];
+  if (topic !== "all") {
+    queryValues.push(topic);
+    baseSql += ` WHERE articles.topic = $1`;
+  }
+  baseSql += ` GROUP BY articles.article_id ORDER BY ${sortby} ${orderby}`;
+  console.log(baseSql);
+  return db.query(baseSql, queryValues).then(({ rows }) => {
+    return rows;
+  });
 };
 
 exports.fetchArticleComments = (id) => {
