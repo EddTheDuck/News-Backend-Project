@@ -3,6 +3,7 @@ const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
 const db = require("../db/connection");
+require("jest-sorted");
 
 beforeEach(() => {
   return seed(testData);
@@ -214,6 +215,65 @@ describe("GET /api/articles", () => {
         expect(articles[0]).toEqual(objectOne);
         expect(articles[1]).toEqual(objectTwo);
         expect(articles[articles.length - 1]).toEqual(objectLast);
+      });
+  });
+  test("Accept a sortby query and responds with an array sorted but the right critera with order DESC", () => {
+    return request(app)
+      .get("/api/articles?sortby=votes")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles).toBeSortedBy("votes", { descending: true });
+      });
+  });
+  test("Accept an order by query that returns an array of results ordered in the correct way = ASC", () => {
+    return request(app)
+      .get("/api/articles?orderby=ASC")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles).toBeSortedBy("created_at", { descending: false });
+      });
+  });
+  test("Accept an sort by query that returns an array of results sorted by the correct critera that is also in ASC order", () => {
+    return request(app)
+      .get("/api/articles?sortby=votes&orderby=ASC")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles).toBeSortedBy("votes", { descending: false });
+      });
+  });
+  test("Takes a query that returns all of the articles of the given topic", () => {
+    return request(app)
+      .get("/api/articles?topic=mitch")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles.length).toBe(11);
+        body.articles.forEach((article) => {
+          expect(article.topic).toBe("mitch");
+        });
+      });
+  });
+  test("returns a 400 invalid query if given a bad sort by request", () => {
+    return request(app)
+      .get("/api/articles?sortby=cheese")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+  test("returns a 400 invalid query if given a bad order by request", () => {
+    return request(app)
+      .get("/api/articles?orderby=cheese")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+  test("returns a 404 not found if topic doesn't exist", () => {
+    return request(app)
+      .get("/api/articles?topic=Rhubarbz")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Request not found!");
       });
   });
 });
