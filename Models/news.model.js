@@ -57,7 +57,6 @@ exports.fetchArticles = (
   }
   baseSql += ` GROUP BY articles.article_id ORDER BY ${sortby} ${orderby}`;
   return db.query(baseSql, queryValues).then(({ rows }) => {
-    console.log(rows, "<<rows");
     if (rows.length === 0) {
       return Promise.reject({ status: 404, msg: "Request not found!" });
     } else {

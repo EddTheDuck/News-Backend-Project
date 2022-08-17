@@ -384,6 +384,7 @@ describe("POST article comments", () => {
       });
   });
 });
+
 describe("DELETE /api/comments/:comment_id", () => {
   describe("successful usage", () => {
     const commentId = 1;
