@@ -56,9 +56,13 @@ exports.fetchArticles = (
     baseSql += ` WHERE articles.topic = $1`;
   }
   baseSql += ` GROUP BY articles.article_id ORDER BY ${sortby} ${orderby}`;
-  console.log(baseSql);
   return db.query(baseSql, queryValues).then(({ rows }) => {
-    return rows;
+    console.log(rows, "<<rows");
+    if (rows.length === 0) {
+      return Promise.reject({ status: 404, msg: "Request not found!" });
+    } else {
+      return rows;
+    }
   });
 };
 

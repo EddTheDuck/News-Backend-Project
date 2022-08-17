@@ -52,11 +52,13 @@ exports.getUsers = (req, res, next) => {
 
 exports.getArticles = (req, res, next) => {
   const { sortby, orderby, topic } = req.query;
-
-  console.log(req.query);
-  fetchArticles(sortby, orderby, topic).then((articles) => {
-    res.send({ articles });
-  });
+  fetchArticles(sortby, orderby, topic)
+    .then((articles) => {
+      res.send({ articles });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.getArticleComments = (req, res, next) => {

@@ -153,7 +153,7 @@ describe("GET /api/users", () => {
   });
 });
 
-describe.only("GET /api/articles", () => {
+describe("GET /api/articles", () => {
   test("Respond with status 200: and an array of articles", () => {
     return request(app)
       .get("/api/articles")
@@ -247,10 +247,33 @@ describe.only("GET /api/articles", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.articles.length).toBe(11);
-
         body.articles.forEach((article) => {
           expect(article.topic).toBe("mitch");
         });
+      });
+  });
+  test("returns a 400 invalid query if given a bad sort by request", () => {
+    return request(app)
+      .get("/api/articles?sortby=cheese")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+  test("returns a 400 invalid query if given a bad order by request", () => {
+    return request(app)
+      .get("/api/articles?orderby=cheese")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+  test("returns a 404 not found if topic doesn't exist", () => {
+    return request(app)
+      .get("/api/articles?topic=Rhubarbz")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Request not found!");
       });
   });
 });
