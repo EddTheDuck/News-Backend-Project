@@ -52,9 +52,14 @@ exports.getUsers = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  fetchArticles().then((articles) => {
-    res.send({ articles });
-  });
+  const { sortby, orderby, topic } = req.query;
+  fetchArticles(sortby, orderby, topic)
+    .then((articles) => {
+      res.send({ articles });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.getArticleComments = (req, res, next) => {
