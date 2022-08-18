@@ -1,4 +1,4 @@
-const { app } = require("../app");
+const app = require("../app");
 const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
