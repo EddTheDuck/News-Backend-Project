@@ -13,6 +13,9 @@ const {
 } = require("./Controller/news.controller");
 app.use(express.json());
 
+app.get("/", () => {
+  msg: "hello!";
+});
 app.get("/api/topics", getTopics);
 app.get("/api/articles/:article_id", getArticlesById);
 app.patch("/api/articles/:article_id", patchVotes);
