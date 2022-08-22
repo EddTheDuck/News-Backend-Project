@@ -1,3 +1,4 @@
+const cors = require("cors");
 const express = require("express");
 const app = express();
 const {
@@ -11,11 +12,10 @@ const {
   deleteCommentById,
   deleteCommentbyId,
 } = require("./Controller/news.controller");
+app.use(cors());
+
 app.use(express.json());
 
-app.get("/", () => {
-  msg: "hello!";
-});
 app.get("/api/topics", getTopics);
 app.get("/api/articles/:article_id", getArticlesById);
 app.patch("/api/articles/:article_id", patchVotes);
