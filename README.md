@@ -33,4 +33,4 @@ Use npm test app.test.js to run the test suite containing the tests associated w
 
 Available endpoints
 
-A list of available endpoints can be found in the api-endpoints.json file, or alternatively by use the endpoint /api within the app itself.
+A list of available endpoints can be found in the endpoints.json file, or alternatively by use the endpoint /api within the app itself.
