@@ -9,7 +9,7 @@ const {
   postArticleComment,
   removeCommentbyId,
 } = require("../Models/news.model");
-const fs = require("fs/promises");
+const fs = require("fs");
 
 exports.getTopics = (req, res, next) => {
   fetchTopics()
@@ -95,13 +95,8 @@ exports.deleteCommentbyId = (req, res, next) => {
     });
 };
 exports.getEndpoints = (req, res, next) => {
-  return fs
-    .readFile(`api-endpoints.json`, "utf-8")
-    .then((message) => {
-      const parsedMessage = JSON.parse(message);
-      res.send({ endpoints: parsedMessage });
-    })
-    .catch((err) => {
-      next(err);
-    });
+  return fs.readFile("api-endpoints.json", "utf-8").then((message) => {
+    console.log(message);
+    res.send(message);
+  });
 };
