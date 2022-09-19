@@ -9,13 +9,13 @@ const {
   getArticles,
   getArticleComments,
   postComment,
-  deleteCommentById,
   deleteCommentbyId,
 } = require("./Controller/news.controller");
 app.use(cors());
 
 app.use(express.json());
 
+app.get("/api", getAllAPI);
 app.get("/api/topics", getTopics);
 app.get("/api/articles/:article_id", getArticlesById);
 app.patch("/api/articles/:article_id", patchVotes);

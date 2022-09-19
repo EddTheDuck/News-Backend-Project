@@ -1,3 +1,4 @@
+const res = require("express/lib/response");
 const {
   fetchTopics,
   fetchArticlesById,
@@ -91,4 +92,9 @@ exports.deleteCommentbyId = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
+exports.getAllAPI = (req, res) => {
+  res.send(JSONEndpoints).catch((err) => {
+    next(err);
+  });
 };
