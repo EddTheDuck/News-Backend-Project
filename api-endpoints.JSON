@@ -6,7 +6,12 @@
     "description": "serves an array of all topics",
     "queries": [],
     "exampleResponse": {
-      "topics": [{ "slug": "paper", "description": "what books are made of" }]
+      "topics": [
+        {
+          "slug": "paper",
+          "description": "what books are made of"
+        }
+      ]
     }
   },
   "GET /api/articles": {
